@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <title>eridian time</title>
+</head>
+<body>
+    <div id="eridian" style="font-size:3rem; margin:16px 0;">-</div>
+
+    <script>
+        const numberDict = { '0': 'ℓ', '1': 'I', '2': 'V', '3': 'λ', '4': '+', '5': '∀' };
+
+        function convertToEridNum(numStr) {
+            return Array.from(numStr).map(ch => numberDict[ch] || ch).join('');
+        }
+
+        function decToHexa(num) {
+            if (num === 0) return '0';
+            const digits = [];
+            while (num !== 0) {
+                digits.push(String(num % 6));
+                num = Math.floor(num / 6);
+            }
+            return digits.reverse().join('');
+        }
+
+        function updateOnce() {
+            const seconds = Date.now() / 1000;
+            const num = Math.floor(seconds / 2.366);
+            const hexa = decToHexa(num);
+            const eridian = convertToEridNum(hexa);
+            document.getElementById('eridian').textContent = eridian;
+        }
+
+        updateOnce();
+        setInterval(updateOnce, 2366);
+    </script>
+</body>
+</html>
